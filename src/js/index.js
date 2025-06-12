@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
     height = canvas.height = window.innerHeight;
   });
 
-  // Implementación simple de Perlin Noise
   let permutation = [...Array(256).keys()];
   permutation = permutation.concat(permutation);
 
@@ -82,15 +81,15 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
         const value = octavePerlin(x * 0.018, y * 0.005 + time, 1, 1);
-        const contrasted = Math.pow(value, 2.8); // o prueba con 0.8 para realce inverso
+        const contrasted = Math.pow(value, 2.8); 
 
 
         const brightness = Math.floor(contrasted * 255);
-        data[index++] = 80 + brightness;  // R
+        data[index++] = 80 + brightness; 
         data[index++] = 0;
-        data[index++] = 100 + brightness * 1.2;  // B
+        data[index++] = 100 + brightness * 1.2;
         data[index++] = 255;
-       // A
+
       }
     }
 
@@ -101,3 +100,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   drawNoise();
 });
+
