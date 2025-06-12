@@ -28,6 +28,24 @@ document.addEventListener("DOMContentLoaded", () => {
     return ((h & 1) ? -u : u) + ((h & 2) ? -v : v);
   }
 
+  function octavePerlin(x, y, octaves, persistence) {
+  let total = 0;
+  let frequency = 0.2;
+  let amplitude = 1;
+  let maxValue = 0;
+
+  for (let i = 0; i < octaves; i++) {
+    total += perlin(x * frequency, y * frequency) * amplitude;
+    maxValue += amplitude;
+
+    amplitude *= persistence;
+    frequency *= 2;
+  }
+
+  return total / maxValue;
+}
+
+
   function perlin(x, y) {
     const X = Math.floor(x) & 255;
     const Y = Math.floor(y) & 255;
@@ -63,12 +81,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        const value = perlin(x * 0.005, y * 0.005 + time);
-        const brightness = Math.floor(value * 100); // Controlar intensidad
-        data[index++] = 80 + brightness; // R
-        data[index++] = 0;              // G
-        data[index++] = 90 + brightness * 1.5; // B
-        data[index++] = 255;            // A
+        const value = octavePerlin(x * 0.018, y * 0.005 + time, 1, 1);
+        const contrasted = Math.pow(value, 2.8); // o prueba con 0.8 para realce inverso
+
+
+        const brightness = Math.floor(contrasted * 255);
+        data[index++] = 80 + brightness;  // R
+        data[index++] = 0;
+        data[index++] = 100 + brightness * 1.2;  // B
+        data[index++] = 255;
+       // A
       }
     }
 
